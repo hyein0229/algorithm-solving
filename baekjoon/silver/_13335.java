@@ -1,15 +1,13 @@
 package baekjoon;
 
 import java.io.*;
-import java.util.Deque;
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.*;
 
 /*
 문제: 13335 트럭
 난이도: Silver 1
 알고리즘: 구현, 시뮬레이션, 자료구조, 큐
-풀이 방법: 큐와 덱을 이용. 대기 중인 트력의 큐열을 만들고 다리 위를 건너는 트럭의 덱열을 만들고 대기열에는 입력되는 모든 트력을 삽입한다.
+풀이 방법: 큐를 이용한다. 대기 중인 트력의 큐를 만들고 다리 위를 건너는 트럭의 큐를 만들고 대기열에는 입력되는 모든 트력을 삽입한다.
         다리 위에 있는 트럭들을 매초마다 앞으로 1씩 이동시킨다. 다리 뒤에 있는 맨 앞 트럭이 다리를 다 건넜다면 제거한다.
         대기열에서 맨 앞 트럭이 다리 위를 올라갈 수 있는지 확인(최대하중, 다리 길이 비교)하여 조건을 만족한다면 대기열에서 빼내어 다리 위 트럭에 추가한다.
         시간을 증가시키면서 트럭이 모두 건널때까지 반복한다.
@@ -23,7 +21,7 @@ public class _13335 {
         int w = Integer.parseInt(lines[1]); // 다리의 길이
         int l = Integer.parseInt(lines[2]); // 다리의 최대하중
         Queue<Integer> readyTrucks = new LinkedList<>(); // 대기 중인 트럭
-        Deque<int[]> moveTrucks = new LinkedList<>(); // 다리 위를 건너는 트럭
+        Queue<int[]> moveTrucks = new LinkedList<>(); // 다리 위를 건너는 트럭
 
         lines = br.readLine().split(" ");
         for(int i=0; i<n; i++) {
