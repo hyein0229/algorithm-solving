@@ -26,7 +26,7 @@ public class _19638 {
         }
 
         int time = 0;
-        while(time < T && !pq.isEmpty()) {
+        while(time < T) {
             int height = pq.peek();
             if(height < H || height == 1) {
                 break;
