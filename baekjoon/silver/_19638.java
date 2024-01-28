@@ -18,46 +18,29 @@ public class _19638 {
         int N = Integer.parseInt(line[0]);
         int H = Integer.parseInt(line[1]);
         int T = Integer.parseInt(line[2]);
-        int[] heights = new int[N];
-        PriorityQueue<int[]> pq = new PriorityQueue<>((o1, o2) -> {
-            return o2[1] - o1[1];
-        });
+        PriorityQueue<Integer> pq = new PriorityQueue<>(Collections.reverseOrder());
 
         for(int i=0; i<N; i++) {
-            heights[i] = Integer.parseInt(br.readLine());
-            pq.add(new int[]{i, heights[i]});
+            int height = Integer.parseInt(br.readLine());
+            pq.add(height);
         }
 
         int time = 0;
         while(time < T && !pq.isEmpty()) {
-            int[] target = pq.poll();
-            int num = target[0];
-            int height = target[1];
-
-            if(height < H) {
+            int height = pq.peek();
+            if(height < H || height == 1) {
                 break;
             }
-
-            if(height == 1) {
-                break;
-            }
-
-            int nextHeight = Math.floorDiv(height, 2);
-            heights[num] = nextHeight;
-            pq.add(new int[]{num, nextHeight});
+            pq.add(pq.poll() / 2); // 뿅망치로 맞은 후 키 삽입
             time++;
         }
 
-        int maxH = heights[0];
-        for(int i=1; i<N; i++) {
-            maxH = Math.max(maxH, heights[i]);
-        }
-        if(maxH < H) {
+        if(pq.peek() < H) {
             System.out.println("YES");
             System.out.println(time);
         } else {
             System.out.println("NO");
-            System.out.println(maxH);
+            System.out.println(pq.peek());
         }
     }
 }
