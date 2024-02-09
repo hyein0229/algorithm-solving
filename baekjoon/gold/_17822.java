@@ -12,7 +12,7 @@ import java.util.*;
         k칸씩 당길 땐 해당 위치의 값이 이미 다른 것으로 복사될 수 있기 때문에 아예 다 복사해놓은 임시 배열을 만드는게 낫다.
         그리고, 그리고 인접한 수를 탐색할 때 지워진 수 0을 포함하지 않는 것도 조심해야 한다.
  */
-public class Main {
+public class _17822 {
     static int N, M, T;
     static int[][] disc;
     static boolean[][] visited;
