@@ -38,13 +38,12 @@ public class _2459 {
 
         for(int i=0; i<K; i++) {
             StringTokenizer st = new StringTokenizer(br.readLine());
-            int x = Integer.parseInt(st.nextToken());
-            int y = Integer.parseInt(st.nextToken());
-            curves[i][0] = x;
-            curves[i][1] = y;
+            curves[i][0] = Integer.parseInt(st.nextToken());
+            curves[i][1] = Integer.parseInt(st.nextToken());
         }
         I = Integer.parseInt(br.readLine());
 
+        wires.add(new Wire(0));
         for(int i=0; i<K; i++) {
             cutWire(curves[i][0], curves[i][1]);
             if(i == K-1) { // 마지막 교차점이면 S 점으로 연결
@@ -52,51 +51,28 @@ public class _2459 {
             }
         }
 
-        double firstLastLen = 0; // 시작점과 끝점을 붙인 후 철사 조각의 길이
         double maxLen = 0;
-        for(int i=0; i<wires.size(); i++) {
-            if(i == 0 || i == wires.size()-1) {
-                firstLastLen += wires.get(i).length;
-            } else {
-                maxLen = Math.max(wires.get(i).length, maxLen);
-            }
+        for(int i=1; i<wires.size()-1; i++) {
+            maxLen = Math.max(wires.get(i).length, maxLen);
         }
-        maxLen = Math.max(maxLen, firstLastLen);
+        maxLen = Math.max(maxLen, wires.get(0).length + wires.get(wires.size()-1).length);
         System.out.println((long)maxLen); // long 형 번환 주의!!!
     }
 
     public static void cutWire(int x, int y) {
 
-        Wire lastWire;
-        if(!wires.isEmpty()) {
-            lastWire = wires.peek(); // 마지막으로 집어 넣은 철사 조각
+        Wire lastWire = wires.peek(); // 마지막으로 집어 넣은 철사 조각
+        if(curX <= I && x >= I+1) { // 자르는 위치를 지나가는지 체크
+            lastWire.length += (I - curX) + 0.5; // 나누어진 첫번째 조각
+            Wire newWire = new Wire((x - (I+1)) + 0.5); // 나누어진 두번째 조각 생성
+            wires.add(newWire);
+
+        } else if(x <= I && curX >= I+1) {
+            lastWire.length += (curX - (I+1)) + 0.5;
+            Wire newWire = new Wire((I - x) + 0.5);
+            wires.add(newWire);
         } else {
-            lastWire = new Wire(0); // 없으면 철사 생성
-            wires.add(lastWire);
-        }
-
-        if(curX < x && curY == y) { // 동쪽
-            if(curX <= I && x >= I+1) { // 자르는 위치를 지나가는지 체크
-                lastWire.length += (I - curX) + 0.5; // 나누어진 첫번째 조각
-                Wire newWire = new Wire((x - (I+1)) + 0.5); // 나누어진 두번째 조각 생성
-                wires.add(newWire);
-            } else {
-                lastWire.length += (x - curX);
-            }
-
-        } else if(curX > x && curY == y) { // 서쪽
-            if(x <= I && curX >= I+1) {
-                lastWire.length += (curX - (I+1)) + 0.5;
-                Wire newWire = new Wire((I - x) + 0.5);
-                wires.add(newWire);
-            } else {
-                lastWire.length += (curX - x);
-            }
-
-        } else if(curX == x && curY < y) { // 북쪽
-            lastWire.length += (y - curY);
-        } else { // 남쪽
-            lastWire.length += (curY - y);
+            lastWire.length += Math.abs(curX - x) + Math.abs(curY - y);
         }
         curX = x;
         curY = y;
